@@ -68,6 +68,6 @@ Now that i have confirmed that AWS CLI is running on the server and my IAM conso
 #### <ins>1.) Define IAM User Names Array</ins>
   - Store the names of the five IAM users in an array for easy iteration during user creation.
 
-
+The name of the five new users are called: Anna, Brad
 
 
