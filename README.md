@@ -68,6 +68,101 @@ Now that i have confirmed that AWS CLI is running on the server and my IAM conso
 #### <ins>1.) Define IAM User Names Array</ins>
   - Store the names of the five IAM users in an array for easy iteration during user creation.
 
-The name of the five new users are called: Anna, Brad
+The names of the five new users are: Anna, Brad, Chris, Dave and Ella
+
+Input:
+
+    # Define IAM usernames array
+    USERNAMES=("anna" "brad" "chris" "dave" "ella")
+
+![Screenshot (269)](https://github.com/user-attachments/assets/e6462361-311b-4fbb-ab38-fc6903c8070e)
+
+#### <ins>2.) Create IAM Users</ins>
+  - Iterate through the IAM user names array and create IAM users for each employee using AWS CLI commands
+
+Input:
+
+        # Create IAM users
+        for USERNAME in "${USERNAMES[@]}"; do
+            echo "Creating IAM user: $USERNAME"
+            aws iam create-user --user-name "$USERNAME"
+        done
+
+![Screenshot (270)](https://github.com/user-attachments/assets/3cdd9115-77b2-47c2-9976-699a3bd5a281)
+
+#### <ins>3.) Create IAM Group</ins>
+  - Define a function to create an IAM group named "admin" using the AWS CLI
+
+Input:
+
+        # Create an IAM group named 'admin'
+        GROUP_NAME="admin"
+        echo "Creating IAM group: $GROUP_NAME"
+        aws iam create-group --group-name "$GROUP_NAME"
+
+![Screenshot (271)](https://github.com/user-attachments/assets/1ad822f4-eb02-4570-a6c3-551a44a0895e)
+
+#### <ins>4.) Attach Administrative Policy to Group</ins>
+  - Attach an AWS-managed administrative policy (e.g., "AdministratorAccess") to the "admin" group to grant administrative privileges.
+
+Input:
+
+        # Attach AWS administrative policy to the group
+        ADMIN_POLICY_ARN="arn:aws:iam::aws:policy/AdministratorAccess"
+        echo "Attaching administrative policy to group: $GROUP_NAME"
+        aws iam attach-group-policy --group-name "$GROUP_NAME" --policy-arn "$ADMIN_POLICY_ARN"
+
+![Screenshot (272)](https://github.com/user-attachments/assets/a0eb0d41-f5d3-4498-bf9f-4f094880fa01)
+
+#### <ins>5.) Assign Users to Group</ins>
+  - Iterate through the array of IAM user names and assign each user to the "admin" group using AWS CLI commands.
+
+Input:
+
+        # Assign the created users to the group
+        for USERNAME in "${USERNAMES[@]}"; do
+            echo "Adding user $USERNAME to group $GROUP_NAME"
+            aws iam add-user-to-group --user-name "$USERNAME" --group-name "$GROUP_NAME"
+        done
+
+![Screenshot (273)](https://github.com/user-attachments/assets/4a4ef85b-304f-49b5-b136-f2ab52e9805d)
+
+Below is a screenshot of the entire shell script for the project.
+
+![Screenshot (264)](https://github.com/user-attachments/assets/a653e5e3-3627-4dbd-a967-07320d3ffe9b)
+
+### <ins>Output</ins>
+
+When executing the Shell Script, the command line to use is:
+
+    ./aws_cloud_manager.sh
+
+After i input this in the terminal, this was the resulting output:
+
+![Screenshot (265)](https://github.com/user-attachments/assets/41373ce0-8820-429b-80a1-ef5608060509)
+
+![Screenshot (266)](https://github.com/user-attachments/assets/9255159a-4485-4b12-8feb-d7fc80b0fdbb)
+
+As we can see the Shell Script automatically created new users for the five employees, created the group "admin", attached the administrative policy to it and added the newly created users to the group.
+
+Lastly, I head over to my IAM console to confirm that the users and user group was automatically added to the console from the EC2 Instance server
+
+Users:
+
+![Screenshot (268)](https://github.com/user-attachments/assets/5589cdc5-e300-47d1-89e8-3a8142a90153)
+
+User Group:
+
+![Screenshot (267)](https://github.com/user-attachments/assets/0f4de9c3-307e-4c5e-adfc-0692639df3b1)
+
+## END
+
+
+
+
+
+
+
+
 
 
